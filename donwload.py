@@ -7,16 +7,20 @@ import time
 import requests
 
 
-
-
 def download_tiktok_video(tiktok_url, download_path):
     global driver
     try:
         # Configurar el controlador de Chrome
-        #service = Service(ChromeDriverManager().install())
-        service = Service("/home/mxchacha/tiktok/chromedriver")
+        service = Service(ChromeDriverManager().install())
         options = webdriver.ChromeOptions()
         options.add_argument("--headless")  # Ejecutar en modo headless para no abrir una ventana del navegador
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-gpu")
+        options.add_argument("--remote-debugging-port=9222")
+        options.add_argument("--disable-software-rasterizer")
+        options.add_argument("--disable-extensions")
+
         driver = webdriver.Chrome(service=service, options=options)
 
         # Abrir la página web que permite descargar videos de TikTok sin marca de agua
@@ -55,7 +59,6 @@ def download_tiktok_video(tiktok_url, download_path):
     finally:
         if driver:
             driver.quit()
-
 
 
 def execute(url):
