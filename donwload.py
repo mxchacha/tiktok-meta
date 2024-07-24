@@ -2,26 +2,22 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
 import time
 import requests
 
 
 def download_tiktok_video(tiktok_url, download_path):
-    global driver
     try:
         # Configurar el controlador de Chrome
-        service = Service(ChromeDriverManager().install())
-        options = webdriver.ChromeOptions()
-        options.add_argument("--headless")  # Ejecutar en modo headless para no abrir una ventana del navegador
-        options.add_argument("--disable-dev-shm-usage")
-        options.add_argument("--no-sandbox")
-        options.add_argument("--disable-gpu")
-        options.add_argument("--remote-debugging-port=9222")
-        options.add_argument("--disable-software-rasterizer")
-        options.add_argument("--disable-extensions")
+        chrome_options = Options()
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-dev-shm-usage")
 
-        driver = webdriver.Chrome(service=service, options=options)
+        # Especificar la ubicación del chromedriver en Heroku
+        service = Service('/app/.chromedriver/bin/chromedriver')
+        driver = webdriver.Chrome(service=service, options=chrome_options)
 
         # Abrir la página web que permite descargar videos de TikTok sin marca de agua
         driver.get("https://snaptik.app/en1")
